@@ -1,0 +1,15 @@
+<?xml
+		version="1.0"
+   encoding="UTF-8"
+   standalone="no" ?>
+<!--
+  Take care, this prolog contains tabs, spaces, LF, CRLF
+  In case of doubt, you can double check with "cat" command:
+  cat -tev test/xml/multiline_xmldecl_complete.xml
+  ^I are tabs
+  ^M is CR
+  $ is LF (well, end of line)
+  -->
+<item>
+  <subitem>value</subitem>
+</item>

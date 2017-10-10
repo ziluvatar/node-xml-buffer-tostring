@@ -1,0 +1,38 @@
+{
+  "name": "xml-buffer-tostring",
+  "version": "0.1.0",
+  "description": "The library converts a buffer containing a XML serialized to a string, detecting the proper encoding",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha './test/**/*.test.js'",
+    "coverage": "nyc --reporter=lcov mocha './test/**/*.test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ziluvatar/node-xml-buffer-tostring.git"
+  },
+  "keywords": [
+    "xml",
+    "encoding",
+    "prolog",
+    "bom",
+    "buffer",
+    "decode"
+  ],
+  "author": "Eduardo Díaz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ziluvatar/node-xml-buffer-tostring/issues"
+  },
+  "homepage": "https://github.com/ziluvatar/node-xml-buffer-tostring#readme",
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.19"
+  },
+  "files": [
+    "index.js"
+  ]
+}
