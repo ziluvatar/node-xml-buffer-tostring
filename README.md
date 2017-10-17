@@ -1,5 +1,6 @@
 XML Buffer To String
 --------------------
+[![Build Status](https://circleci.com/gh/ziluvatar/node-xml-buffer-tostring/tree/master.svg?style=shield)](https://circleci.com/gh/ziluvatar/node-xml-buffer-tostring/tree/master.svg?style=shield)
 
 This library will convert a XML from a buffer to a string, dealing with the different encodings that can be used when serializing a XML.
 
