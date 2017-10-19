@@ -1,6 +1,6 @@
 {
   "name": "xml-buffer-tostring",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The library converts a buffer containing a XML serialized to a string, detecting the proper encoding",
   "main": "index.js",
   "scripts": {
