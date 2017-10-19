@@ -2,29 +2,6 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-defaults: &defaults
-  steps:
-    - checkout
-
-    # Download and cache dependencies
-    - run: echo "$NODE_VERSION" > _NODE_VERSION
-    - restore_cache:
-        keys:
-        - v1-dependencies-node-{{ checksum "_NODE_VERSION" }}-{{ checksum "package-lock.json" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-
-    - run: npm install
-
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-node-{{ checksum "_NODE_VERSION" }}-{{ checksum "package-lock.json" }}
-
-    # run tests!
-    - run: npm test
-
-
 version: 2
 jobs:
   test8:
@@ -32,21 +9,72 @@ jobs:
       - image: circleci/node:8
     environment:
       - NODE_VERSION: "v8"
-    <<: *defaults
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - run: echo "$NODE_VERSION" > _NODE_VERSION
+      - restore_cache: &restoreCache
+          keys:
+            - v1-dependencies-node-{{ checksum "_NODE_VERSION" }}-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm install
+
+      - save_cache: &saveCache
+          paths:
+            - node_modules
+          key: v1-dependencies-node-{{ checksum "_NODE_VERSION" }}-{{ checksum "package-lock.json" }}
+
+      # Only for latest, we run with coverage
+      - run: npm run coverage
+
+      - persist_to_workspace:
+          root: coverage
+          # Must be relative path from root
+          paths:
+            - lcov.info
 
   test6:
     docker:
       - image: circleci/node:6
     environment:
       - NODE_VERSION: "v6"
-    <<: *defaults
+    steps:
+      - checkout
+      - run: echo "$NODE_VERSION" > _NODE_VERSION
+      - restore_cache: *restoreCache
+      - run: npm install
+      - save_cache: *saveCache
+      - run: npm test
 
   test4:
     docker:
       - image: circleci/node:4
     environment:
       - NODE_VERSION: "v4"
-    <<: *defaults
+    steps:
+      - checkout
+      - run: echo "$NODE_VERSION" > _NODE_VERSION
+      - restore_cache: *restoreCache
+      - run: npm install
+      - save_cache: *saveCache
+      - run: npm test
+
+  coverage:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: echo "$NODE_VERSION" > _NODE_VERSION
+      - restore_cache: *restoreCache
+      - run: npm install
+      - attach_workspace:
+          at: coverage
+
+      - run: npm run ci:coverage:report
+
 
 workflows:
   version: 2
@@ -56,3 +84,8 @@ workflows:
       - test8
       - test6
       - test4
+      - coverage:
+          requires:
+            - test8
+            - test6
+            - test4
